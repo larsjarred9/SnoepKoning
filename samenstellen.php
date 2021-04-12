@@ -50,7 +50,7 @@ include 'php/database.php';
                 <button type="button" class="position-absolute top-0 start-50 translate-middle btn btn-sm btn-dark rounded-pill" style="width: 2rem; height:2rem;">2</button>
                 <button type="button" class="position-absolute top-0 start-100 translate-middle btn btn-sm btn-dark rounded-pill" style="width: 2rem; height:2rem;">3</button>
             </div>
-            <form action="" method="POST">
+            <form action="php/snoep.php" method="POST">
                 <div class="text-center mb-3">
                     <input type="submit" class="btn btn-secondary btn-sm" value="Volgende Stap"></a>
                 </div>
@@ -86,9 +86,10 @@ include 'php/database.php';
                 <button type="button" class="position-absolute top-0 start-50 translate-middle btn btn-sm btn-primary rounded-pill" style="width: 2rem; height:2rem;">2</button>
                 <button type="button" class="position-absolute top-0 start-100 translate-middle btn btn-sm btn-dark rounded-pill" style="width: 2rem; height:2rem;">3</button>
             </div>
-            <form action="" method="POST">
-                <div class="text-center mb-3">
-                    <a class="btn btn-secondary btn-sm">Volgende Stap</a>
+            <form action="php/snoep.php" method="POST">
+                <div class="text-center mb-3 g-2">
+                    <input type="submit" name="submit" class="btn btn-danger btn-sm" value="Vorige Stap"></a>
+                    <input type="submit" class="btn btn-secondary btn-sm" value="Volgende Stap"></a>
                 </div>
                 <div class="row row-cols-3">
                     <?php
@@ -98,10 +99,47 @@ include 'php/database.php';
                     while ($stmt->fetch()) {
                         echo '<div class="col">';
                         echo '<div class="card h-100 shadow-sm text-center">';
-                        echo '<img src="images/vormen/' . $image . '" class="card-img-top">';
+                        echo '<img src="images/kleuren/' . $image . '" class="card-img-top">';
                         echo '<div class="card-body">';
                         echo '<h3 class="card-title">' . $name . '</h3>';
-                        echo '<input class="form-check-input" type="radio" name="vorm" ';
+                        echo '<input class="form-check-input" type="radio" name="kleur" ';
+                        if ($id == 1) {
+                            echo " checked ";
+                        }
+                        echo ' value="' . $id . '">';
+                        echo '</div>';
+                        echo '</div>';
+                        echo '</div>';
+                    }
+                    ?>
+                </div>
+            </form>
+            <?php } elseif (empty($_SESSION['smaak'])) { ?>
+            <div class="position-relative m-4">
+                <div class="progress" style="height: 1px;">
+                    <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <button type="button" class="position-absolute top-0 start-0 translate-middle btn btn-sm btn-primary rounded-pill" style="width: 2rem; height:2rem;">1</button>
+                <button type="button" class="position-absolute top-0 start-50 translate-middle btn btn-sm btn-primary rounded-pill" style="width: 2rem; height:2rem;">2</button>
+                <button type="button" class="position-absolute top-0 start-100 translate-middle btn btn-sm btn-primary rounded-pill" style="width: 2rem; height:2rem;">3</button>
+            </div>
+            <form action="php/snoep.php" method="POST">
+                <div class="text-center mb-3 g-2">
+                    <input type="submit" name="submit" class="btn btn-danger btn-sm" value="Vorige Stap"></a>
+                    <input type="submit" class="btn btn-secondary btn-sm" value="Volgende Stap"></a>
+                </div>
+                <div class="row row-cols-3">
+                    <?php
+                    $stmt = $conn->prepare("SELECT id, name, image FROM smaak");
+                    $stmt->execute();
+                    $stmt->bind_result($id, $name, $image);
+                    while ($stmt->fetch()) {
+                        echo '<div class="col">';
+                        echo '<div class="card h-100 shadow-sm text-center">';
+                        echo '<img src="images/smaaken/' . $image . '" class="card-img-top">';
+                        echo '<div class="card-body">';
+                        echo '<h3 class="card-title">' . $name . '</h3>';
+                        echo '<input class="form-check-input" type="radio" name="smaak" ';
                         if ($id == 1) {
                             echo " checked ";
                         }
