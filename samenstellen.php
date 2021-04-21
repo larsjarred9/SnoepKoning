@@ -4,6 +4,7 @@ if (empty($_SESSION['id'])) {
     header("location: logout.php");
 }
 include 'php/database.php';
+require 'php/classes.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,7 +36,8 @@ include 'php/database.php';
                         <a class="nav-link" href="bestellingen.php">Bestellingen</a>
                     </li>
                 </ul>
-                <button class="btn btn-outline-success" type="submit">Logout</button>
+                <a class='nav-item nav-link' href="cart.php">Winkelmand</a>
+                <a class="btn btn-outline-success" href="logout.php" type="submit">Logout</a>
                 </form>
             </div>
         </div>
@@ -50,7 +52,7 @@ include 'php/database.php';
                 <button type="button" class="position-absolute top-0 start-50 translate-middle btn btn-sm btn-dark rounded-pill" style="width: 2rem; height:2rem;">2</button>
                 <button type="button" class="position-absolute top-0 start-100 translate-middle btn btn-sm btn-dark rounded-pill" style="width: 2rem; height:2rem;">3</button>
             </div>
-            <form action="php/snoep.php" method="POST">
+            <form action="php/snoep.php" method="post">
                 <div class="text-center mb-3">
                     <input type="submit" class="btn btn-secondary btn-sm" value="Volgende Stap"></a>
                 </div>
@@ -114,7 +116,7 @@ include 'php/database.php';
                     ?>
                 </div>
             </form>
-            <?php } elseif (empty($_SESSION['smaak'])) { ?>
+        <?php } elseif (empty($_SESSION['smaak'])) { ?>
             <div class="position-relative m-4">
                 <div class="progress" style="height: 1px;">
                     <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
@@ -129,29 +131,39 @@ include 'php/database.php';
                     <input type="submit" class="btn btn-secondary btn-sm" value="Volgende Stap"></a>
                 </div>
                 <div class="row row-cols-3">
-                    <?php
-                    $stmt = $conn->prepare("SELECT id, name, image FROM smaak");
-                    $stmt->execute();
-                    $stmt->bind_result($id, $name, $image);
-                    while ($stmt->fetch()) {
-                        echo '<div class="col">';
-                        echo '<div class="card h-100 shadow-sm text-center">';
-                        echo '<img src="images/smaaken/' . $image . '" class="card-img-top">';
-                        echo '<div class="card-body">';
-                        echo '<h3 class="card-title">' . $name . '</h3>';
-                        echo '<input class="form-check-input" type="radio" name="smaak" ';
-                        if ($id == 1) {
-                            echo " checked ";
-                        }
-                        echo ' value="' . $id . '">';
-                        echo '</div>';
-                        echo '</div>';
-                        echo '</div>';
+                <?php
+                $stmt = $conn->prepare("SELECT id, name, image FROM smaak");
+                $stmt->execute();
+                $stmt->bind_result($id, $name, $image);
+                while ($stmt->fetch()) {
+                    echo '<div class="col">';
+                    echo '<div class="card h-100 shadow-sm text-center">';
+                    echo '<img src="images/smaaken/' . $image . '" class="card-img-top">';
+                    echo '<div class="card-body">';
+                    echo '<h3 class="card-title">' . $name . '</h3>';
+                    echo '<input class="form-check-input" type="radio" name="smaak" ';
+                    if ($id == 1) {
+                        echo " checked ";
                     }
-                    ?>
+                    echo ' value="' . $id . '">';
+                    echo '</div>';
+                    echo '</div>';
+                    echo '</div>';
+                }
+            } else {
+                $vorm = $_SESSION['vormvar'];
+                $kleur = $_SESSION['kleurvar'];
+                $smaak = $_SESSION['smaakvar'];
+                $_SESSION['snoepjes'][] = serialize(new Snoepjes($vorm, $kleur, $smaak));
+                unset($_SESSION['vorm']);
+                unset($_SESSION['kleur']);
+                unset($_SESSION['smaak']);
+                header("location: cart.php");
+            }
+
+                ?>
                 </div>
             </form>
-        <?php } ?>
     </div>
 </body>
 

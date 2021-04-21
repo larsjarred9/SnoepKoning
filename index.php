@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<?php 
+<?php
 session_start();
 if (!empty($_SESSION['id'])) {
     header("location: home.php");
@@ -7,34 +7,36 @@ if (!empty($_SESSION['id'])) {
 
 include "php/database.php";
 
-if(!empty($_POST['username'])){
+if (!empty($_POST['username'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
     $username = filter_var($username, FILTER_SANITIZE_STRING);
     $password = filter_var($password, FILTER_SANITIZE_STRING);
 
-    $stmt = $conn->prepare("SELECT id, password FROM users WHERE username = ?");
+    $stmt = $conn->prepare("SELECT id, admin, password FROM users WHERE username = ?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
-    $stmt->bind_result($id, $password_filter);
+    $stmt->bind_result($id, $isadmin, $password_filter);
     $stmt->fetch();
     $stmt->close();
 
-    if(empty($id)) {
+    if (empty($id)) {
         echo "Username bestaat niet.<br><a href=''>Terug</a>";
         exit();
-    }
-    else {
+    } else {
         if (password_verify($password, $password_filter)) {
             $_SESSION['id'] = $id;
-            header('location: home.php');
-        }
-        else {
+            if ($isadmin == 1) {
+                header('location: admin/index.php');
+            }
+            else {
+                header('location: home.php');
+            }
+        } else {
             echo "Wachtwoord is incorrect.<br><a href=''>Terug</a>";
             exit();
         }
     }
-
 }
 ?>
 <html lang="en">
