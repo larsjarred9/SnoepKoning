@@ -3,6 +3,9 @@ session_start();
 if (empty($_SESSION['id'])) {
     header("location: logout.php");
 }
+
+require "php/database.php";
+require "php/classes.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,36 +37,32 @@ if (empty($_SESSION['id'])) {
                         <a class="nav-link" href="bestellingen.php">Bestellingen</a>
                     </li>
                 </ul>
-                    <a class='nav-item nav-link' href="cart.php">Winkelmand</a>
-                    <a class="btn btn-outline-success" href="logout.php" type="submit">Logout</a>
+                <a class='nav-item nav-link' href="cart.php">Winkelmand</a>
+                <a class="btn btn-outline-success" href="logout.php" type="submit">Logout</a>
                 </form>
             </div>
         </div>
     </nav>
     <div class="container">
-    <!-- Hierinzetten --> 
-    <div class="row row-cols-3">
-                    <?php
-                    $stmt = $conn->prepare("SELECT id, name, image FROM home");
-                    $stmt->execute();
-                    $stmt->bind_result($id, $name, $image);
-                    while ($stmt->fetch()) {
-                        echo '<div class="col">';
-                        echo '<div class="card h-100 shadow-sm text-center">';
-                        echo '<img src="images/kleuren/' . $image . '" class="card-img-top">';
-                        echo '<div class="card-body">';
-                        echo '<h3 class="card-title">' . $name . '</h3>';
-                        echo '<input class="form-check-input" type="radio" name="kleur" ';
-                        if ($id == 1) {
-                            echo " checked ";
-                        }
-                        echo ' value="' . $id . '">';
-                        echo '</div>';
-                        echo '</div>';
-                        echo '</div>';
-                    }
-                    ?>
-                </div>
+        <!-- Hierinzetten -->
+        <div class="row row-cols-3">
+            <?php
+            $stmt = $conn->prepare("SELECT id, name, image FROM premade");
+            $stmt->execute();
+            $stmt->bind_result($id, $name, $image);
+            while ($stmt->fetch()) {
+                echo '<div class="col">';
+                echo '<div class="card h-100 shadow-sm text-center">';
+                echo '<img src="images/kleuren/' . $image . '" class="card-img-top">';
+                echo '<div class="card-body">';
+                echo '<h3 class="card-title">' . $name . '</h3>';
+                echo '<a href="php/addpremade.php?id='.$id.'" class="btn btn-secondary">Bestellen</a>';
+                echo '</div>';
+                echo '</div>';
+                echo '</div>';
+            }
+            ?>
+        </div>
     </div>
 </body>
 

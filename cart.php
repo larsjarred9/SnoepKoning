@@ -97,7 +97,7 @@ function getKleur($conn, $kleur)
                     echo '<small class="text-muted">Kleur: '.$kleur.'</small><br>';
                     echo '<small class="text-muted">Smaak: '.$smaak.'</small>';
                     echo '</div>';
-                    echo '<span class="text-muted">€12 <i class="bi bi-x-circle-fill text-primary ms-2"></i></span>';
+                    echo '<span class="text-muted">€12 <a href=""><i class="bi bi-x-circle-fill text-primary ms-2"></i></a></span>';
                     echo '</li>';
                 }
                 ?>
