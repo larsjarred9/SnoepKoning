@@ -27,6 +27,7 @@ if (!empty($_POST['username'])) {
         if (password_verify($password, $password_filter)) {
             $_SESSION['id'] = $id;
             if ($isadmin == 1) {
+                $_SESSION['admin'] = true;
                 header('location: admin/index.php');
             }
             else {

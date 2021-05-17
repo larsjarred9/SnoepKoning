@@ -3,7 +3,9 @@ session_start();
 if (empty($_SESSION['id'])) {
     header("location: logout.php");
 }
-
+if (!empty($_SESSION['admin'])) {
+    header("location: logout.php");
+}
 require "php/database.php";
 require "php/classes.php";
 ?>
@@ -43,7 +45,7 @@ require "php/classes.php";
             </div>
         </div>
     </nav>
-    <div class="container">
+    <div class="container mt-3">
         <!-- Hierinzetten -->
         <div class="row row-cols-3">
             <?php
@@ -53,7 +55,7 @@ require "php/classes.php";
             while ($stmt->fetch()) {
                 echo '<div class="col">';
                 echo '<div class="card h-100 shadow-sm text-center">';
-                echo '<img src="images/kleuren/' . $image . '" class="card-img-top">';
+                echo '<img src="images/premade/' . $image . '" class="card-img-top">';
                 echo '<div class="card-body">';
                 echo '<h3 class="card-title">' . $name . '</h3>';
                 echo '<a href="php/addpremade.php?id='.$id.'" class="btn btn-secondary">Bestellen</a>';

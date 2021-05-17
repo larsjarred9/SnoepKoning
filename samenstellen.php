@@ -3,6 +3,9 @@ session_start();
 if (empty($_SESSION['id'])) {
     header("location: logout.php");
 }
+if (!empty($_SESSION['admin'])) {
+    header("location: logout.php");
+}
 include 'php/database.php';
 require 'php/classes.php';
 ?>

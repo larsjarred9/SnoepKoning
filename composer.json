@@ -1,0 +1,12 @@
+{
+    "name": "gebruiker/snoepkoning",
+    "authors": [
+        {
+            "name": "Lars Jarred Speetjens",
+            "email": "84644@glr.nl"
+        }
+    ],
+    "require": {
+        "phpmailer/phpmailer": "^6.4"
+    }
+}

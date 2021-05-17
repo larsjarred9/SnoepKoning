@@ -3,10 +3,15 @@ session_start();
 if (empty($_SESSION['id'])) {
     header("location: logout.php");
 }
+if (!empty($_SESSION['admin'])) {
+    header("location: logout.php");
+}
 include 'php/database.php';
 require 'php/classes.php';
 
-$productcount = count($_SESSION['snoepjes']);
+if(isset($_SESSION['snoepjes'])){
+    $productcount = count($_SESSION['snoepjes']);
+}else $productcount = 0;
 
 
 function getVorm($conn, $vorm)
@@ -84,8 +89,12 @@ function getKleur($conn, $kleur)
                     <span class="text-primary">Winkelwagen</span>
                     <span class="badge bg-primary rounded-pill"><?php echo $productcount; ?> Producten</span>
                 </h4>
+                <form method="post" action="php/addtocart.php">
                 <ul class="list-group mb-3">
                 <?php
+                if(empty($productcount)) {
+                    echo "<p>Je hebt nog geen producten toegevoegd aan de winkelwagen.</p>";
+                }
                 for ($x = 0; $x < $productcount; $x++) {
                     $snoepjes = unserialize($_SESSION['snoepjes'][$x]);
                     $vorm = getVorm($conn, $snoepjes->vorm);
@@ -93,24 +102,25 @@ function getKleur($conn, $kleur)
                     $kleur = getKleur($conn, $snoepjes->kleur);
                     echo '<li class="list-group-item d-flex justify-content-between lh-sm">';
                     echo '<div>';
-                    echo '<h6 class="my-0">Snoep '.$vorm.'</h6>';
+                    echo '<h6 class="my-0">Snoep '.$vorm.' | <small>50 KG</small></h6>';
                     echo '<small class="text-muted">Kleur: '.$kleur.'</small><br>';
                     echo '<small class="text-muted">Smaak: '.$smaak.'</small>';
                     echo '</div>';
-                    echo '<span class="text-muted">€12 <a href=""><i class="bi bi-x-circle-fill text-primary ms-2"></i></a></span>';
+                    echo '<span class="text-muted">€75 <a href="php/removeoutcart.php?id='.$x.'"><i class="bi bi-x-circle-fill text-primary ms-2"></i></a></span>';
                     echo '</li>';
                 }
                 ?>
                 </ul>
 
-                <form class="card p-2">
+                <div class="card p-2">
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="Kortingscode">
                         <button type="submit" class="btn btn-secondary">Redeem</button>
                     </div>
-                </form>
+                </div>
 
                 <input type="submit" class="btn btn-primary mt-3" value="Plaats Bestelling">
+                </form>
             </div>
         </div>
     </div>
