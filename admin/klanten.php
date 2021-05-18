@@ -9,7 +9,7 @@ if (empty($_SESSION['admin'])) {
 include '../php/database.php';
 require '../php/classes.php';
 
-$stmt = $conn->prepare("SELECT id, voornaam, achternaam, bedrijfsnaam, telefoon, straatnaam, postcode, plaats FROM klanten ORDER BY ID ASC");
+$stmt = $conn->prepare("SELECT id, voornaam, achternaam, bedrijfsnaam, telefoon, straatnaam, postcode, plaats FROM klanten WHERE enabled = 1 ORDER BY ID ASC");
 $stmt->execute();
 $klanten = $stmt->get_result();
 $stmt->close();
@@ -85,7 +85,7 @@ $stmt->close();
                     </thead>
                     <tbody>
                         <?php foreach ($klanten as $item) {
-                            echo "<tr><th scope='row'>{$item['id']}</th><td>{$item['voornaam']}</td><td>{$item['achternaam']}</td><td>{$item['bedrijfsnaam']}</td><td>{$item['telefoon']}</td><td>{$item['straatnaam']}</td><td>{$item['postcode']}</td><td>{$item['plaats']}</td><td><a href='' class='btn btn-primary'>Verwijderen</a></td></tr>";
+                            echo "<tr><th scope='row'>{$item['id']}</th><td>{$item['voornaam']}</td><td>{$item['achternaam']}</td><td>{$item['bedrijfsnaam']}</td><td>{$item['telefoon']}</td><td>{$item['straatnaam']}</td><td>{$item['postcode']}</td><td>{$item['plaats']}</td><td><a href='../php/removeklant.php?id={$item['id']}' class='btn btn-primary'>Verwijderen</a></td></tr>";
                         } ?>
                     </tbody>
                 </table>
