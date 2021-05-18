@@ -68,6 +68,7 @@ if (!empty($_POST['username'])) {
             <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
         </form>
     </main>
+    <script src="js/bootstrap.min.js"></script>
 </body>
 
 </html>

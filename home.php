@@ -66,6 +66,7 @@ require "php/classes.php";
             ?>
         </div>
     </div>
+    <script src="js/bootstrap.min.js"></script>
 </body>
 
 </html>
